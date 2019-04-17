@@ -1,0 +1,3 @@
+[submodule "research"]
+	path = research
+	url = ssh://git@git.neptune.one:2617/minecraft/research.git
