@@ -86,3 +86,21 @@ class TestMain(unittest.TestCase):
         reward, done = env.step(Action.RIGHT)
         self.assertEqual(Map.GOAL.get_reward(), reward)
         self.assertTrue(done)
+
+    def test_landform_without_starting_point_creation(self):
+        landform = [
+            [Map.LAND, Map.LAND, Map.DANGER],
+            [Map.DANGER, Map.LAND, Map.GOAL],
+            [Map.DANGER, Map.LAND, Map.DANGER],
+        ]
+        with self.assertRaises(SystemExit):
+            env = Environment(landform)
+
+    def test_landform_without_goal(self):
+        landform = [
+            [Map.LAND, Map.LAND, Map.DANGER],
+            [Map.DANGER, Map.LAND, Map.LAND],
+            [Map.DANGER, Map.LAND, Map.DANGER],
+        ]
+        with self.assertRaises(SystemExit):
+            env = Environment(landform)

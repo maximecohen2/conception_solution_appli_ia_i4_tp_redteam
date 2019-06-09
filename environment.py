@@ -44,7 +44,9 @@ class Environment():
                 elif col == Map.GOAL:
                     self.goal_position = [col_index, row_index]
         if self.position == None:
-            exit("Starting land not found in landmap.")
+            exit("Starting land not found in landform.")
+        elif self.goal_position == None:
+            exit("A goal is expected in the provided landform.")
         self.ROWS = self.get_rows()
         self.COLS = self.get_cols()
 
