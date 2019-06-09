@@ -1,6 +1,7 @@
 import unittest
 from environment import Environment, Map, Action
 
+
 class TestMain(unittest.TestCase):
     def test_environnement_dimensions_computation(self):
         landform = [
@@ -85,5 +86,3 @@ class TestMain(unittest.TestCase):
         reward, done = env.step(Action.RIGHT)
         self.assertEqual(Map.GOAL.get_reward(), reward)
         self.assertTrue(done)
-
-

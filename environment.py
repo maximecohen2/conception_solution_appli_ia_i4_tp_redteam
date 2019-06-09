@@ -1,5 +1,6 @@
 from enum import Enum, unique
 
+
 @unique
 class Map(Enum):
     LAND = 0
@@ -25,6 +26,7 @@ class Action(Enum):
     LEFT = 2
     RIGHT = 3
 
+
 class Environment():
     def __init__(self, landform):
         self.position = None
@@ -37,9 +39,12 @@ class Environment():
                 row.append(Map.DANGER)
             for col_index, col in enumerate(row):
                 self.reward_map[row_index].append(col.get_reward())
-                if col == Map.START: self.position = [col_index, row_index]
-                elif col == Map.GOAL: self.goal_position = [col_index, row_index]
-        if self.position == None: exit("Starting land not found in landmap.")
+                if col == Map.START:
+                    self.position = [col_index, row_index]
+                elif col == Map.GOAL:
+                    self.goal_position = [col_index, row_index]
+        if self.position == None:
+            exit("Starting land not found in landmap.")
         self.ROWS = self.get_rows()
         self.COLS = self.get_cols()
 
@@ -71,4 +76,3 @@ class Environment():
             reward = Map.DANGER.get_reward()
             done = True
         return (reward, done)
-
