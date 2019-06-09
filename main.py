@@ -1,11 +1,17 @@
 import click
 from gui import Gui
+from shell import Shell
 
 
 @click.group()
 def cli():
     pass
 
+
+@cli.command()
+def shell():
+    app = Shell()
+    app.mainloop()
 
 @cli.command()
 def gui():
