@@ -30,11 +30,13 @@ class Environment():
         self.landform = landform
         self._fill()
         self._build_reward_map()
+        self.ROWS = self.get_rows()
+        self.COLS = self.get_cols()
 
-    def get_max_row(self):
+    def get_rows(self):
         return len(self.landform)
 
-    def get_max_col(self):
+    def get_cols(self):
         return max([len(row) for row in self.landform])
 
     def _build_reward_map(self):
@@ -46,7 +48,7 @@ class Environment():
 
     def _fill(self):
         for row in self.landform:
-            while len(row) < self.get_max_row():
+            while len(row) < self.get_rows():
                 row.append(Map.DANGER)
 
     def step(self, action):

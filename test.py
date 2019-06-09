@@ -9,8 +9,10 @@ class TestMain(unittest.TestCase):
             [Map.DANGER, Map.LAND, Map.DANGER],
         ]
         env = Environment(landform)
-        self.assertEqual(3, env.get_max_row())
-        self.assertEqual(3, env.get_max_col())
+        self.assertEqual(3, env.get_rows())
+        self.assertEqual(3, env.get_cols())
+        self.assertEqual(3, env.ROWS)
+        self.assertEqual(3, env.COLS)
 
     def test_environnment_landform_filling(self):
         landform = [
