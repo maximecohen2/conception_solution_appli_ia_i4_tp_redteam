@@ -30,6 +30,7 @@ class Action(Enum):
 class Environment():
     def __init__(self, landform):
         self.position = None
+        self.start_position = None
         self.goal_position = None
         self.reward_map = []
         self.landform = landform
@@ -40,15 +41,16 @@ class Environment():
             for col_index, col in enumerate(row):
                 self.reward_map[row_index].append(col.get_reward())
                 if col == Map.START:
-                    self.position = [col_index, row_index]
+                    self.start_position = [col_index, row_index]
                 elif col == Map.GOAL:
                     self.goal_position = [col_index, row_index]
-        if self.position == None:
+        if self.start_position == None:
             exit("Starting land not found in landform.")
         elif self.goal_position == None:
             exit("A goal is expected in the provided landform.")
         self.ROWS = self.get_rows()
         self.COLS = self.get_cols()
+        self.reset()
 
     def get_rows(self):
         return len(self.landform)
@@ -78,3 +80,6 @@ class Environment():
             reward = Map.DANGER.get_reward()
             done = True
         return (reward, done)
+
+    def reset(self):
+        self.position = self.start_position.copy()

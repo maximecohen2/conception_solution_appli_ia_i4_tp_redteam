@@ -100,7 +100,19 @@ class TestMain(unittest.TestCase):
         landform = [
             [Map.LAND, Map.LAND, Map.DANGER],
             [Map.DANGER, Map.LAND, Map.LAND],
-            [Map.DANGER, Map.LAND, Map.DANGER],
+            [Map.DANGER, Map.START, Map.DANGER],
         ]
         with self.assertRaises(SystemExit):
             env = Environment(landform)
+
+    def test_env_reset(self):
+        landform = [
+            [Map.LAND, Map.LAND, Map.DANGER],
+            [Map.DANGER, Map.LAND, Map.GOAL],
+            [Map.DANGER, Map.START, Map.DANGER],
+        ]
+        env = Environment(landform)
+        env.step(Action.UP)
+        env.step(Action.UP)
+        env.reset()
+        self.assertEqual([1, 2], env.position)
