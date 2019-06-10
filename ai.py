@@ -16,6 +16,7 @@ class AI():
             self.env.reset()
             while not done:
                 action = choose_action()
+                reward, done = env.step(action)
 
     def choose_action(self):
         if np.random.random() < self.random_endeavours_bias:
@@ -24,5 +25,5 @@ class AI():
             return Action.all()[np.argmax(self.qvalues[self.get_state()])]
 
     def get_state(self):
-        #return self.env.position[0]
-        pass
+        X, Y = 0, 1
+        return self.env.position[X] + ( self.env.position[Y] * self.env.COLS )
