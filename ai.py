@@ -4,8 +4,9 @@ from environment import Action
 
 
 class AI():
-    def __init__(self, env):
-        self.random_endeavours_bias = 0.1
+    def __init__(self, env, endeavours_bias=0.1, learning_rate=0.8):
+        self.learning_rate = learning_rate
+        self.endeavours_bias = endeavours_bias
         self.env = env
         num_states = env.COLS * env.ROWS
         num_actions = len(Action.all())
@@ -17,9 +18,11 @@ class AI():
             while not done:
                 action = choose_action()
                 reward, done = env.step(action)
+                #td_target = reward + self.learning_rate * np.max(self.qvalues[self.get_state()])
+                #self.qvalues[state][action] += td_target - qvalues[state][action]
 
     def choose_action(self):
-        if np.random.random() < self.random_endeavours_bias:
+        if np.random.random() < self.endeavours_bias:
             return np.random.choice(Action.all())
         else:
             return Action.all()[np.argmax(self.qvalues[self.get_state()])]
