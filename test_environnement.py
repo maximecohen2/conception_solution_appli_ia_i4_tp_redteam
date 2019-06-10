@@ -2,7 +2,7 @@ import unittest
 from environment import Environment, Map, Action
 
 
-class TestMain(unittest.TestCase):
+class TestEnvironnemnet(unittest.TestCase):
     def test_environnement_dimensions_computation(self):
         landform = [
             [Map.START, Map.LAND],
@@ -116,3 +116,8 @@ class TestMain(unittest.TestCase):
         env.step(Action.UP)
         env.reset()
         self.assertEqual([1, 2], env.position)
+
+    def test_actions(self):
+        actions = Action.all()
+        self.assertEqual(4, len(actions))
+

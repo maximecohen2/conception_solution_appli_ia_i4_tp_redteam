@@ -26,6 +26,9 @@ class Action(Enum):
     LEFT = 2
     RIGHT = 3
 
+    def all():
+        return [a for a in Action]
+
 
 class Environment():
     def __init__(self, landform):
