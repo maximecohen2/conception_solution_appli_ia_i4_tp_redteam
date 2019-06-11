@@ -1,3 +1,5 @@
+#!./venv/bin/python
+
 import click
 from gui import Gui
 from shell import Shell
