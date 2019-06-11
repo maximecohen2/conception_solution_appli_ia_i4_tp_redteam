@@ -1,4 +1,5 @@
 import unittest
+import environment
 from environment import Environment, Map, Action
 
 
@@ -10,10 +11,24 @@ class TestEnvironnemnet(unittest.TestCase):
             [Map.DANGER, Map.LAND, Map.DANGER],
         ]
         env = Environment(landform)
-        self.assertEqual(3, env.get_rows())
-        self.assertEqual(3, env.get_cols())
-        self.assertEqual(3, env.ROWS)
-        self.assertEqual(3, env.COLS)
+        self.assertEqual(5, environment.get_max_rows(landform))
+        self.assertEqual(5, environment.get_max_cols(landform))
+        self.assertEqual(5, env.ROWS)
+        self.assertEqual(5, env.COLS)
+
+    def test_row_filling(self):
+        landform = [
+            [Map.START, Map.LAND],
+            [Map.DANGER, Map.LAND, Map.GOAL],
+            [Map.DANGER, Map.LAND, Map.DANGER],
+        ]
+        test = [Map.LAND]
+        environment.fill_row(3, test, Map.DANGER)
+        self.assertEqual(
+            [Map.DANGER, Map.LAND, Map.DANGER, Map.DANGER, Map.DANGER],
+            test
+        )
+
 
     def test_environnment_landform_filling(self):
         landform = [
@@ -22,9 +37,11 @@ class TestEnvironnemnet(unittest.TestCase):
             [Map.DANGER, Map.LAND],
         ]
         expected = [
-            [Map.START, Map.LAND, Map.DANGER],
-            [Map.DANGER, Map.LAND, Map.GOAL],
-            [Map.DANGER, Map.LAND, Map.DANGER],
+            [Map.DANGER, Map.DANGER, Map.DANGER, Map.DANGER, Map.DANGER],
+            [Map.DANGER, Map.START,  Map.LAND,   Map.DANGER, Map.DANGER],
+            [Map.DANGER, Map.DANGER, Map.LAND,   Map.GOAL,   Map.DANGER],
+            [Map.DANGER, Map.DANGER, Map.LAND,   Map.DANGER, Map.DANGER],
+            [Map.DANGER, Map.DANGER, Map.DANGER, Map.DANGER, Map.DANGER]
         ]
         env = Environment(landform)
         self.assertEqual(expected, env.landform)
@@ -36,9 +53,11 @@ class TestEnvironnemnet(unittest.TestCase):
             [Map.DANGER, Map.LAND, Map.DANGER],
         ]
         expected = [
-            [-1, -1, -100],
-            [-100, -1, 0],
-            [-100, -1, -100]
+            [-100, -100, -100, -100, -100],
+            [-100, -1,   -1,   -100, -100],
+            [-100, -100, -1,   0,    -100],
+            [-100, -100, -1,   -100, -100],
+            [-100, -100, -100, -100, -100]
         ]
         env = Environment(landform)
         self.assertEqual(expected, env.reward_map)
@@ -50,7 +69,7 @@ class TestEnvironnemnet(unittest.TestCase):
             [Map.DANGER, Map.START, Map.DANGER],
         ]
         env = Environment(landform)
-        self.assertEqual([1, 2], env.position)
+        self.assertEqual([2, 3], env.position)
 
     def test_steping_modify_the_position(self):
         landform = [
@@ -60,7 +79,7 @@ class TestEnvironnemnet(unittest.TestCase):
         ]
         env = Environment(landform)
         reward, done = env.step(Action.UP)
-        self.assertEqual([1, 1], env.position)
+        self.assertEqual([2, 2], env.position)
         self.assertEqual(-1, reward)
         self.assertFalse(done)
 
@@ -115,7 +134,7 @@ class TestEnvironnemnet(unittest.TestCase):
         env.step(Action.UP)
         env.step(Action.UP)
         env.reset()
-        self.assertEqual([1, 2], env.position)
+        self.assertEqual([2, 3], env.position)
 
     def test_actions(self):
         actions = Action.all()

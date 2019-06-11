@@ -1,6 +1,21 @@
 from enum import Enum, unique
 
 
+def fill_row(length, row, land):
+    while len(row) < length:
+        row.append(Map.DANGER)
+    row.insert(0, Map.DANGER)
+    row.append(Map.DANGER)
+
+
+def get_max_rows(landform):
+    return len(landform)
+
+
+def get_max_cols(landform):
+    return max([len(row) for row in landform])
+
+
 @unique
 class Map(Enum):
     LAND = 0
@@ -37,48 +52,53 @@ class Environment():
         self.goal_position = None
         self.reward_map = []
         self.landform = landform
+
+        tmp_length = get_max_cols(landform)
+        self._add_top_and_bottom_borders()
+
         for row_index, row in enumerate(self.landform):
             self.reward_map.append([])
-            while len(row) < self.get_rows():
-                row.append(Map.DANGER)
+            fill_row(tmp_length, row, Map.DANGER)
             for col_index, col in enumerate(row):
                 self.reward_map[row_index].append(col.get_reward())
-                if col == Map.START:
-                    self.start_position = [col_index, row_index]
-                elif col == Map.GOAL:
-                    self.goal_position = [col_index, row_index]
+                self._register_common_positions(col, col_index, row_index)
+
         if self.start_position == None:
             exit("Starting land not found in landform.")
         elif self.goal_position == None:
             exit("A goal is expected in the provided landform.")
-        self.ROWS = self.get_rows()
-        self.COLS = self.get_cols()
+
+        self.ROWS = get_max_rows(self.landform)
+        self.COLS = get_max_cols(self.landform)
         self.reset()
 
-    def get_rows(self):
-        return len(self.landform)
+    def _register_common_positions(self, land, x, y):
+        if land == Map.START:
+            self.start_position = [x, y]
+        elif land == Map.GOAL:
+            self.goal_position = [x, y]
 
-    def get_cols(self):
-        return max([len(row) for row in self.landform])
+    def _add_top_and_bottom_borders(self):
+        border = [Map.DANGER for _ in range(get_max_cols(self.landform))]
+        self.landform.insert(0, border)
+        self.landform.append(border)
 
     def step(self, action):
         X, Y = 0, 1
         if action == Action.UP:
-            if self.position[Y] != 0:
-                self.position[Y] -= 1
+            self.position[Y] -= 1
         elif action == Action.DOWN:
-            if self.position[Y] != self.ROWS:
-                self.position[Y] += 1
+            self.position[Y] += 1
         elif action == Action.LEFT:
-            if self.position[X] != 0:
-                self.position[X] -= 1
+            self.position[X] -= 1
         elif action == Action.RIGHT:
-            if self.position[X] != self.COLS:
-                self.position[X] += 1
+            self.position[X] += 1
         done = False
         try:
             reward = self.reward_map[self.position[Y]][self.position[X]]
-            done = True if self.position == self.goal_position else False
+            win = self.position == self.goal_position
+            loose = self.landform[self.position[Y]][self.position[X]] == Map.DANGER
+            done = True if win or loose else False
         except IndexError:
             reward = Map.DANGER.get_reward()
             done = True

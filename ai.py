@@ -4,22 +4,28 @@ from environment import Action
 
 
 class AI():
-    def __init__(self, env, endeavours_bias=0.1, learning_rate=0.8):
-        self.learning_rate = learning_rate
+    def __init__(self, env, endeavours_bias=0.1, longterm_satisfaction_bias=0.9):
         self.endeavours_bias = endeavours_bias
+        self.longterm_satisfaction_bias = longterm_satisfaction_bias
         self.env = env
         num_states = env.COLS * env.ROWS
         num_actions = len(Action.all())
         self.qvalues = np.zeros((num_states, num_actions))
 
-    def learn(self, steps):
+    def learn(self, steps, display=None):
         for _ in range(steps):
             self.env.reset()
+            done = False
+            total_reward = 0
             while not done:
-                action = choose_action()
-                reward, done = env.step(action)
-                #td_target = reward + self.learning_rate * np.max(self.qvalues[self.get_state()])
-                #self.qvalues[state][action] += td_target - qvalues[state][action]
+                action = self.choose_action()
+                previous_qvalues = self.qvalues[self.get_state()]
+                reward, done = self.env.step(action)
+                current_qvalues = self.qvalues[self.get_state()]
+                previous_qvalues[action.value] = reward + (self.longterm_satisfaction_bias * np.max(current_qvalues))
+                total_reward += reward
+                display(reward, action)
+            print("this play total reward : {}".format(total_reward))
 
     def choose_action(self):
         if np.random.random() < self.endeavours_bias:
