@@ -22,7 +22,8 @@ class AI():
                 previous_qvalues = self.qvalues[self.get_state()]
                 reward, done = self.env.step(action)
                 current_qvalues = self.qvalues[self.get_state()]
-                previous_qvalues[action.value] = reward + (self.longterm_satisfaction_bias * np.max(current_qvalues))
+                previous_qvalues[action.value] = reward + \
+                    (self.longterm_satisfaction_bias * np.max(current_qvalues))
                 total_reward += reward
                 display(reward, action)
 
@@ -34,4 +35,4 @@ class AI():
 
     def get_state(self):
         X, Y = 0, 1
-        return self.env.position[X] + ( self.env.position[Y] * self.env.COLS )
+        return self.env.position[X] + (self.env.position[Y] * self.env.COLS)

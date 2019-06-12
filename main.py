@@ -15,6 +15,7 @@ def shell():
     app = Shell()
     app.mainloop()
 
+
 @cli.command()
 def gui():
     app = Gui()
