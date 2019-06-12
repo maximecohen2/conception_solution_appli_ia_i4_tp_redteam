@@ -25,7 +25,6 @@ class AI():
                 previous_qvalues[action.value] = reward + (self.longterm_satisfaction_bias * np.max(current_qvalues))
                 total_reward += reward
                 display(reward, action)
-            print("this play total reward : {}".format(total_reward))
 
     def choose_action(self):
         if np.random.random() < self.endeavours_bias:

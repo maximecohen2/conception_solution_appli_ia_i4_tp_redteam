@@ -7,13 +7,13 @@ from ai import AI
 class Shell():
     def __init__(self):
         self.landform = [
-            [Map.START, Map.LAND, Map.DANGER],
-            [Map.DANGER, Map.LAND, Map.DANGER],
-            [Map.DANGER, Map.LAND, Map.LAND],
-            [Map.DANGER, Map.DANGER, Map.LAND],
-            [Map.DANGER, Map.LAND, Map.LAND],
-            [Map.DANGER, Map.LAND, Map.DANGER],
-            [Map.GOAL, Map.LAND, Map.DANGER]
+            [Map.LAND, Map.START, Map.LAND,   Map.DANGER],
+            [Map.LAND, Map.LAND,  Map.LAND,   Map.LAND],
+            [Map.LAND, Map.LAND,  Map.LAND, Map.LAND],
+            [Map.LAND, Map.LAND,  Map.LAND, Map.LAND],
+            [Map.LAND, Map.LAND,  Map.LAND,   Map.LAND],
+            [Map.LAND, Map.LAND,  Map.LAND,   Map.DANGER],
+            [Map.GOAL, Map.LAND,  Map.LAND,   Map.DANGER]
         ]
         self.env = Environment(self.landform)
         self.ai = AI(self.env)
@@ -22,7 +22,8 @@ class Shell():
     def display(self, reward, action):
         os.system("clear")
         self.display_landform(reward, action)
-        input()
+        import time
+        time.sleep(0.2)
 
     def display_landform(self, reward, action):
         col_num = (self.env.COLS * 2) - 1

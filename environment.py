@@ -80,8 +80,8 @@ class Environment():
 
     def _add_top_and_bottom_borders(self):
         border = [Map.DANGER for _ in range(get_max_cols(self.landform))]
-        self.landform.insert(0, border)
-        self.landform.append(border)
+        self.landform.insert(0, border.copy())
+        self.landform.append(border.copy())
 
     def step(self, action):
         X, Y = 0, 1
@@ -94,14 +94,10 @@ class Environment():
         elif action == Action.RIGHT:
             self.position[X] += 1
         done = False
-        try:
-            reward = self.reward_map[self.position[Y]][self.position[X]]
-            win = self.position == self.goal_position
-            loose = self.landform[self.position[Y]][self.position[X]] == Map.DANGER
-            done = True if win or loose else False
-        except IndexError:
-            reward = Map.DANGER.get_reward()
-            done = True
+        reward = self.reward_map[self.position[Y]][self.position[X]]
+        win = self.position == self.goal_position
+        loose = self.landform[self.position[Y]][self.position[X]] == Map.DANGER
+        done = True if win or loose else False
         return (reward, done)
 
     def reset(self):
